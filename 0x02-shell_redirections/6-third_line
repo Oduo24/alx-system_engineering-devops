@@ -1,0 +1,2 @@
+#!/bin/bash
+ewk 'NR==3' iacta
