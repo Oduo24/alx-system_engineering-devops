@@ -1,0 +1,2 @@
+#!/bin/bash
+grep -E "^[a-zA-Z]\w+"
