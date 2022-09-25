@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+#Installs nginx on a server
+sudo apt-get update -y
+sudo apt-get install nginx -y
+sudo ufw enable
+sudo ufw allow 'Nginx HTTP'
+sudo chmod 777 /var/www/html/index.nginx-debian.html
+sudo echo "Hello World!" | sudo tee /var/www/html/index.nginx-debian.html
+sudo touch /var/www/html/my_404.html && echo "Ceci n'est pas une page" | sudo tee /var/www/html/my_404.html
+sudo chmod 644 /var/www/html/index.nginx-debian.html
+new_conf="server_name _;\n\trewrite ^/redirect_me/$ http://www.google.com permanent;"
+new_error="server_name\ _;\n\terror_page 404 /my_404.html;\nlocation = /my_404.html {\n\troot /var/www/html/;\n\tinternal;\n}"
+sudo chmod 777 /etc/nginx/sites-enabled/default
+sudo sed -i "s@server_name\ _;@${new_conf}@g" /etc/nginx/sites-enabled/default
+sudo sed -i "s@server_name\ _;@${new_error}@g" /etc/nginx/sites-enabled/default
+sudo chmod 644 /etc/nginx/sites-enabled/default
+sudo service nginx start

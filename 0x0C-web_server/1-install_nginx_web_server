@@ -2,8 +2,6 @@
 #Installs nginx on a server
 sudo apt-get update -y
 sudo apt-get install nginx -y
-sudo ufw enable
-sudo ufw allow 'Nginx HTTP'
 sudo chmod 777 /var/www/html/index.nginx-debian.html
 sudo echo "Hello World!" | sudo tee /var/www/html/index.nginx-debian.html
 sudo chmod 644 /var/www/html/index.nginx-debian.html
