@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#Installs nginx on a server
+sudo apt-get update -y
+sudo apt-get install nginx -y
+sudo ufw enable
+sudo ufw allow 'Nginx HTTP'
+sudo chmod 777 /var/www/html/index.nginx-debian.html
+sudo echo "Hello World!" | sudo tee /var/www/html/index.nginx-debian.html
+sudo chmod 644 /var/www/html/index.nginx-debian.html
+new_conf="server_name _;\n\trewrite ^/redirect_me/$ http://www.google.com permanent;"
+sudo sed -i "s@server_name\ _;@${new_conf}@g" /etc/nginx/sites-enabled/default
+sudo service nginx start
