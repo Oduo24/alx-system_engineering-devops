@@ -1,12 +1,8 @@
 #!/usr/bin/env bash
-#Installs nginx on a server and configures it to have a custom http response header
-shellcheck -e SC2154 0-custom_http_response_header
+# Bash script that installs nginx and adds custom header
+new_header="server_name\ _;\n\tadd_header X-Served-By \$hostname;"
 sudo apt-get update -y
 sudo apt-get install nginx -y
-sudo chmod 777 /var/www/html/index.nginx-debian.html
-sudo echo "Hello World!" | sudo tee /var/www/html/index.nginx-debian.html
-sudo chmod 644 /var/www/html/index.nginx-debian.html
-sudo chmod 777 /etc/nginx/sites-enabled/default
-sudo sed 's/server_name _;/server_name _;\n\tadd_header\tX-Served-By\$hostname;/' /etc/nginx/sites-enabled/default
-sudo chmod 644 /etc/nginx/sites-enabled/default
+echo "Hello World!" | sudo tee /var/www/html/index.nginx-debian.html > /dev/null
+sudo sed -i "s@server_name\ _;@${new_header}@g" /etc/nginx/sites-enabled/default
 sudo service nginx start
