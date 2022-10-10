@@ -1,4 +1,4 @@
-#!/ussr/bin/env bash
+#!/usr/bin/env bash
 #running nginx as user nginx
 pkill apache2
 sudo sed -i "s/listen 80 default_server;/listen 8080 default_server;/g" /etc/nginx/sites-enabled/default
