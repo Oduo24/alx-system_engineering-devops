@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+#Runs whoami command with another user aside from the root user
+runuser -l $1 -c whoami
