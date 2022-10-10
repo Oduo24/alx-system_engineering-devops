@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# enable nginx as nginx and listen on port 8080
+pkill apache2
+sudo sed -i "s/80/8080/g" /etc/nginx/sites-enabled/default
+chmod 0644 /etc/nginx/nginx.conf
+chown nginx:nginx /etc/nginx/nginx.conf
+sudo su nginx -s /bin/bash -c 'service nginx start'
