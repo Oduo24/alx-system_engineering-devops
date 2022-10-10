@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#running nginx as user nginx
+# enable nginx as nginx and listen on port 8080
 pkill apache2
 sudo sed -i "s/listen 80 default_server;/listen 8080 default_server;/g" /etc/nginx/sites-enabled/default
 sudo sed -i "s/listen \[::\]:80/listen \[::\]:8080/g" /etc/nginx/sites-enabled/default
