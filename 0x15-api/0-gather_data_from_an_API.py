@@ -1,29 +1,33 @@
 #!/usr/bin/python3
 """0-gather_data_from_an_API module"""
-
 import requests
-from os import sys
+from sys import argv
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     try:
         int(argv[1])
     except Exception as e:
         exit(1)
 
-    employee_id = int(sys.argv[1])
-    employee_name = requests.get('https://jsonplaceholder.typicode.com/users/{}'.format(employee_id)).json().get("name")
-    todo_list = requests.get('https://jsonplaceholder.typicode.com/todos').json()
+    employeeID = int(argv[1])
+    endpoint = "https://jsonplaceholder.typicode.com"
+    user = requests.get("{}/users/{}".format(endpoint, employeeID)).json()
+    todo = requests.get(
+        "{}/users/{}/todos".format(endpoint, employeeID)).json()
+    employeeName = user.get('name')
+    completed = 0
+    total = 0
+    for elem in todo:
+        if elem.get('completed') is True:
+            total += 1
+            completed += 1
+        else:
+            total += 1
 
-    total_tasks = 0
-    total_tasks_done = 0
-    titles_of_completed_tasks = []
+    print("Employee {} is done with tasks({}/{}):".format(employeeName,
+                                                          completed,
+                                                          total))
 
-    for todo in todo_list:
-        if todo.get("userId") == employee_id:
-            total_tasks += 1
-            if todo.get("completed") == True:
-                total_tasks_done += 1
-                titles_of_completed_tasks.append(todo.get("title"))
-    print('Employee {} is done with tasks ({}/{}):'.format(employee_name, total_tasks_done, total_tasks))
-    for title in titles_of_completed_tasks:
-    print('\t {}'.format(title))
+    for done in todo:
+        if done.get('completed') is True:
+            print("\t {}".format(done.get('title')))
