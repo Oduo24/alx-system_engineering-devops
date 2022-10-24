@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-"""This module gathers data from an API"""
+"""This module gathers data from an API
+It takes one commandline argument which is the id of the employee
+"""
 import requests
 from os import sys
 
