@@ -5,6 +5,10 @@ import requests
 from os import sys
 
 if __name__ == '__main__':
+    try:
+        int(argv[1])
+    except Exception as e:
+        exit(1)
 
     employee_id = int(sys.argv[1])
     employee_name = requests.get('https://jsonplaceholder.typicode.com/users/{}'.format(employee_id)).json().get("name")
