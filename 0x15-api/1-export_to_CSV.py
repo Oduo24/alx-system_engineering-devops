@@ -1,25 +1,22 @@
 #!/usr/bin/python3
-"""1-export_to_CSV module"""
+'''
+A script to export data in the CSV format.
+'''
+
 import csv
 import requests
 from sys import argv
 
-if __name__ == "__main__":
-    try:
-        int(argv[1])
-    except Exception as e:
-        exit(1)
-
-    employeeID = int(argv[1])
-    endpoint = "https://jsonplaceholder.typicode.com"
-    user = requests.get("{}/users/{}".format(endpoint, employeeID)).json()
-    todo = requests.get(
-        "{}/users/{}/todos".format(endpoint, employeeID)).json()
-    employeeName = user.get('username')
-
-    with open('{}.csv'.format(employeeID), 'w', encoding="utf-8") as file:
-        writer = csv.writer(file, delimiter=',', quoting=csv.QUOTE_ALL)
-        for elem in todo:
-            row = [employeeID, employeeName, elem.get(
-                'completed'), elem.get('title')]
-            writer.writerow(row)
+if __name__ == '__main__':
+    uid = argv[1]
+    url = "https://jsonplaceholder.typicode.com/users/{}".format(uid)
+    user = requests.get(url, verify=False).json()
+    url = "https://jsonplaceholder.typicode.com/todos?userId={}".format(
+        uid)
+    todo = requests.get(url, verify=False).json()
+    with open("{}.csv".format(uid), 'w', newline='') as csvfile:
+        taskwriter = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
+        for t in todo:
+            taskwriter.writerow([int(uid), user.get('username'),
+                                 t.get('completed'),
+                                 t.get('title')])

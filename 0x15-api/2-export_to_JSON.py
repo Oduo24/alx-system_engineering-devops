@@ -1,33 +1,23 @@
 #!/usr/bin/python3
-"""2-export_to_JSON module"""
-from json import dumps
+'''
+A script to export data in the JSON format.
+'''
+
+import json
 import requests
 from sys import argv
 
-if __name__ == "__main__":
-    try:
-        int(argv[1])
-    except Exception as e:
-        exit(1)
-
-    employeeID = int(argv[1])
-    endpoint = "https://jsonplaceholder.typicode.com"
-    user = requests.get("{}/users/{}".format(endpoint, employeeID)).json()
-    todo = requests.get(
-        "{}/users/{}/todos".format(endpoint, employeeID)).json()
-    employeeName = user.get('username')
-
-    row = []
-
-    for elem in todo:
-        dict = {
-            "task": elem.get('title'),
-            "completed": elem.get('completed'),
-            "username": employeeName
-        }
-        row.append(dict)
-
-    employeeDict = {employeeID: row}
-
-    with open('{}.json'.format(employeeID), 'w', encoding="utf-8") as file:
-        file.write(dumps(employeeDict))
+if __name__ == '__main__':
+    uid = argv[1]
+    url = "https://jsonplaceholder.typicode.com/users/{}".format(uid)
+    user = requests.get(url, verify=False).json()
+    url = "https://jsonplaceholder.typicode.com/todos?userId={}".format(uid)
+    todo = requests.get(url, verify=False).json()
+    name = user.get('username')
+    t = [{"task": t.get("title"),
+          "username": name,
+          "completed": t.get("completed")} for t in todo]
+    bj = {}
+    bj[uid] = t
+    with open("{}.json".format(uid), 'w') as filejs:
+        json.dump(bj, filejs)
