@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Infinitely displays To infinity and beyond
+while true; do
+	trap 'echo "I am invincible!!!" ' TERM
+	echo "To infinity and beyond"
+	sleep 2
+done
